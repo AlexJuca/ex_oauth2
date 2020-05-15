@@ -314,6 +314,72 @@ defmodule ExOAuth2.Client do
   end
 
   @doc """
+  Fetches an `OAuth2.AccessToken` struct by making a request to the token endpoint
+  but does not perform authentication
+
+  Returns the `OAuth2.Client` struct loaded with the access token which can then
+
+  ## Arguments
+
+  * `client` - a `OAuth2.Client` struct with the strategy to use, defaults to
+    `OAuth2.Strategy.AuthCode`
+  * `params` - a keyword list of request parameters which will be encoded into
+    a query string or request body dependening on the selected strategy
+  * `headers` - a list of request headers
+  * `opts` - a Keyword list of request options which will be merged with
+    `OAuth2.Client.request_opts`
+
+  ## Options
+
+  * `:recv_timeout` - the timeout (in milliseconds) of the request
+  * `:proxy` - a proxy to be used for the request; it can be a regular url or a
+    `{host, proxy}` tuple
+  """
+  @spec get_token_without_auth(t, params, headers, Keyword.t()) ::
+          {:ok, Client.t()} | {:error, Response.t()} | {:error, Error.t()}
+  def get_token_without_auth(%{token_method: method} = client, params \\ [], headers \\ [], opts \\ []) do
+    {client, url} = token_url(client, params, headers)
+
+    case Request.request(method, client, url, client.params, client.headers, opts) do
+      {:ok, response} ->
+        token = AccessToken.new(response.body)
+        {:ok, %{client | headers: [], params: %{}, token: token}}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  @doc """
+  Same as `get_token_without_auth/4` but raises `OAuth2.Error` if an error occurs during the
+  request.
+  """
+  @spec get_token_without_auth!(t, params, headers, Keyword.t()) :: Client.t() | Error.t()
+  def get_token_without_auth!(client, params \\ [], headers \\ [], opts \\ []) do
+    case get_token_without_auth(client, params, headers, opts) do
+      {:ok, client} ->
+        client
+
+      {:error, %Response{status_code: code, headers: headers, body: body}} ->
+        raise %Error{
+          reason: """
+          Server responded with status: #{code}
+
+          Headers:
+
+          #{Enum.reduce(headers, "", fn {k, v}, acc -> acc <> "#{k}: #{v}\n" end)}
+          Body:
+
+          #{inspect(body)}
+          """
+        }
+
+      {:error, error} ->
+        raise error
+    end
+  end
+
+  @doc """
   Refreshes an existing access token using a refresh token.
   """
   @spec refresh_token(t, params, headers, Keyword.t()) ::
