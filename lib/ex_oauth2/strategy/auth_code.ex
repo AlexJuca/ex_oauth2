@@ -55,8 +55,8 @@ defmodule ExOAuth2.Strategy.AuthCode do
     |> put_param(:grant_type, "authorization_code")
     |> put_param(:client_id, client.client_id)
     |> put_param(:redirect_uri, client.redirect_uri)
+    |> put_param(:client_secret, client.client_secret)
     |> merge_params(params)
-    |> basic_auth()
     |> put_headers(headers)
   end
 
@@ -71,11 +71,15 @@ defmodule ExOAuth2.Strategy.AuthCode do
       raise ExOAuth2.Error, reason: "Missing required key `code` for `#{inspect(__MODULE__)}`"
     end
 
+    headers = List.keydelete(headers, "authorization", 0)
+    headers = List.keystore(headers, "accept", 1, {"accept", "*/*"})
+
     client
     |> put_param(:code, code)
     |> put_param(:grant_type, "authorization_code")
     |> put_param(:client_id, client.client_id)
     |> put_param(:redirect_uri, client.redirect_uri)
+    |> put_param(:client_secret, client.client_secret)
     |> merge_params(params)
     |> put_headers(headers)
   end
