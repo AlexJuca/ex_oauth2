@@ -5,7 +5,7 @@ defmodule ExOAuth2.Mixfile do
 
   def project do
     [
-      app: :exoauth2,
+      app: :ex_oauth2,
       name: "Ex_OAuth2",
       version: @version,
       elixir: "~> 1.2",

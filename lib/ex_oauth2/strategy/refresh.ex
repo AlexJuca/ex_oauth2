@@ -51,4 +51,23 @@ defmodule ExOAuth2.Strategy.Refresh do
     |> basic_auth()
     |> put_headers(headers)
   end
+
+  @doc """
+  Refresh an access token given the specified validation code.
+  """
+  @impl true
+  def get_token_without_auth(client, params, headers) do
+    {token, params} = Keyword.pop(params, :refresh_token, client.params["refresh_token"])
+
+    unless token do
+      raise ExOAuth2.Error,
+        reason: "Missing required key `refresh_token` for `#{inspect(__MODULE__)}`"
+    end
+
+    client
+    |> put_param(:refresh_token, token)
+    |> put_param(:grant_type, "refresh_token")
+    |> merge_params(params)
+    |> put_headers(headers)
+  end
 end

@@ -51,4 +51,25 @@ defmodule ExOAuth2.Strategy.Password do
     |> basic_auth()
     |> put_headers(headers)
   end
+
+  @doc """
+  Retrieve an access token given the specified End User username and password.
+  """
+  @impl true
+  def get_token_without_auth(client, params, headers) do
+    {username, params} = Keyword.pop(params, :username, client.params["username"])
+    {password, params} = Keyword.pop(params, :password, client.params["password"])
+
+    unless username && password do
+      raise ExOAuth2.Error,
+        reason: "Missing required keys `username` and `password` for #{inspect(__MODULE__)}"
+    end
+
+    client
+    |> put_param(:username, username)
+    |> put_param(:password, password)
+    |> put_param(:grant_type, "password")
+    |> merge_params(params)
+    |> put_headers(headers)
+  end
 end

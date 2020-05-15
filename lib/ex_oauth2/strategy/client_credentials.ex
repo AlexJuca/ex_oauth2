@@ -39,7 +39,20 @@ defmodule ExOAuth2.Strategy.ClientCredentials do
     |> put_headers(headers)
   end
 
-  defp auth_scheme(client, "auth_header"), do: basic_auth(client)
+  @doc """
+  Retrieve an access token given the specified strategy.
+  """
+  @impl true
+  def get_token_without_auth(client, params, headers) do
+    {auth_scheme, params} = Keyword.pop(params, :auth_scheme, "auth_header")
+
+    client
+    |> put_param(:grant_type, "client_credentials")
+    |> auth_scheme(auth_scheme)
+    |> merge_params(params)
+    |> put_headers(headers)
+  end
+
   defp auth_scheme(client, "request_body"), do: request_body(client)
 
   defp request_body(client) do

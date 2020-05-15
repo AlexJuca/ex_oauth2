@@ -1,6 +1,6 @@
 defmodule ExOAuth2.Strategy do
   @moduledoc ~S"""
-  The OAuth2 strategy specification.
+  The ExOAuth2 strategy specification.
 
   This module defines the required callbacks for all strategies.
 
@@ -9,12 +9,12 @@ defmodule ExOAuth2.Strategy do
   Here's an example strategy for authenticating with GitHub.
 
       defmodule GitHub do
-        use OAuth2.Strategy
+        use ExOAuth2.Strategy
 
         # Public API
 
         def new do
-          OAuth2.Client.new([
+          ExOAuth2.Client.new([
             strategy: __MODULE__,
             client_id: "abc123",
             client_secret: "abcdefg",
@@ -28,23 +28,23 @@ defmodule ExOAuth2.Strategy do
         def authorize_url!(params \\ []) do
           new()
           |> put_param(:scope, "user,public_repo")
-          |> OAuth2.Client.authorize_url!(params)
+          |> ExOAuth2.Client.authorize_url!(params)
         end
 
         def get_token!(params \\ [], headers \\ []) do
-          OAuth2.Client.get_token!(new(), params, headers)
+          ExOAuth2.Client.get_token!(new(), params, headers)
         end
 
         # Strategy Callbacks
 
         def authorize_url(client, params) do
-          OAuth2.Strategy.AuthCode.authorize_url(client, params)
+          ExOAuth2.Strategy.AuthCode.authorize_url(client, params)
         end
 
         def get_token(client, params, headers) do
           client
           |> put_header("Accept", "application/json")
-          |> OAuth2.Strategy.AuthCode.get_token(params, headers)
+          |> ExOAuth2.Strategy.AuthCode.get_token(params, headers)
         end
       end
 
@@ -60,7 +60,7 @@ defmodule ExOAuth2.Strategy do
 
   Use the access token to access desired resources.
 
-      user = OAuth2.AccessToken.get!(token, "/user")
+      user = ExOAuth2.AccessToken.get!(token, "/user")
   """
 
   alias ExOAuth2.Client
@@ -97,6 +97,24 @@ defmodule ExOAuth2.Strategy do
       end
   """
   @callback get_token(Client.t(), Client.params(), Client.headers()) :: Client.t()
+
+  @doc """
+  Builds the URL to the token endpoint.
+
+  ## Example
+
+      def get_token_without_auth(client, params, headers) do
+        client
+        |> put_param(:code, params[:code])
+        |> put_param(:grant_type, "authorization_code")
+        |> put_param(:client_id, client.client_id)
+        |> put_param(:client_secret, client.client_secret)
+        |> put_param(:redirect_uri, client.redirect_uri)
+        |> merge_params(params)
+        |> put_headers(headers)
+      end
+  """
+  @callback get_token_without_auth(Client.t(), Client.params(), Client.headers()) :: Client.t()
 
   defmacro __using__(_) do
     quote do

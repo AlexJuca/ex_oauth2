@@ -40,14 +40,14 @@ defmodule ExOAuth2.Strategy.AuthCode do
   end
 
   @doc """
-  Retrieve an access token given the specified validation code.
+  Retrieve an access token given the specified validation code
   """
   @impl true
   def get_token(client, params, headers) do
     {code, params} = Keyword.pop(params, :code, client.params["code"])
 
     unless code do
-      raise OAuth2.Error, reason: "Missing required key `code` for `#{inspect(__MODULE__)}`"
+      raise ExOAuth2.Error, reason: "Missing required key `code` for `#{inspect(__MODULE__)}`"
     end
 
     client
@@ -61,7 +61,7 @@ defmodule ExOAuth2.Strategy.AuthCode do
   end
 
   @doc """
-  Retrieve an access token given the specified validation code.
+  Retrieve an access token given the specified validation code but does not generate authentication header
   """
   @impl true
   def get_token_without_auth(client, params, headers) do
