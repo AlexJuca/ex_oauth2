@@ -1,4 +1,4 @@
-defmodule OAuth2.Strategy.AuthCode do
+defmodule ExOAuth2.Strategy.AuthCode do
   @moduledoc """
   The Authorization Code Strategy.
 
@@ -24,7 +24,7 @@ defmodule OAuth2.Strategy.AuthCode do
   exposing it to others, including the resource owner.
   """
 
-  use OAuth2.Strategy
+  use ExOAuth2.Strategy
 
   @doc """
   The authorization URL endpoint of the provider.
@@ -59,4 +59,25 @@ defmodule OAuth2.Strategy.AuthCode do
     |> basic_auth()
     |> put_headers(headers)
   end
+
+  @doc """
+  Retrieve an access token given the specified validation code.
+  """
+  @impl true
+  def get_token_without_auth(client, params, headers) do
+    {code, params} = Keyword.pop(params, :code, client.params["code"])
+
+    unless code do
+      raise ExOAuth2.Error, reason: "Missing required key `code` for `#{inspect(__MODULE__)}`"
+    end
+
+    client
+    |> put_param(:code, code)
+    |> put_param(:grant_type, "authorization_code")
+    |> put_param(:client_id, client.client_id)
+    |> put_param(:redirect_uri, client.redirect_uri)
+    |> merge_params(params)
+    |> put_headers(headers)
+  end
+  
 end

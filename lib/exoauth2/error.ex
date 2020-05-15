@@ -1,4 +1,4 @@
-defmodule OAuth2.Error do
+defmodule ExOAuth2.Error do
   @moduledoc false
 
   @type t :: %__MODULE__{

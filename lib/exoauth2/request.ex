@@ -1,10 +1,10 @@
-defmodule OAuth2.Request do
+defmodule ExOAuth2.Request do
   @moduledoc false
 
   require Logger
-  import OAuth2.Util
+  import ExOAuth2.Util
 
-  alias OAuth2.{Client, Error, Response}
+  alias ExOAuth2.{Client, Error, Response}
 
   @type body :: any
 

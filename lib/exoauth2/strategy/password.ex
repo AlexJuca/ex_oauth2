@@ -1,4 +1,4 @@
-defmodule OAuth2.Strategy.Password do
+defmodule ExOAuth2.Strategy.Password do
   @moduledoc """
   The Resource Owner Password Credentials Authorization Strategy.
 
@@ -20,14 +20,14 @@ defmodule OAuth2.Strategy.Password do
   credentials with a long-lived access token or refresh token.
   """
 
-  use OAuth2.Strategy
+  use ExOAuth2.Strategy
 
   @doc """
   Not used for this strategy.
   """
   @impl true
   def authorize_url(_client, _params) do
-    raise OAuth2.Error, reason: "This strategy does not implement `authorize_url`."
+    raise ExOAuth2.Error, reason: "This strategy does not implement `authorize_url`."
   end
 
   @doc """
@@ -39,7 +39,7 @@ defmodule OAuth2.Strategy.Password do
     {password, params} = Keyword.pop(params, :password, client.params["password"])
 
     unless username && password do
-      raise OAuth2.Error,
+      raise ExOAuth2.Error,
         reason: "Missing required keys `username` and `password` for #{inspect(__MODULE__)}"
     end
 

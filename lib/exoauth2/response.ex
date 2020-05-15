@@ -1,4 +1,4 @@
-defmodule OAuth2.Response do
+defmodule ExOAuth2.Response do
   @moduledoc """
   Defines the `OAuth2.Response` struct which is created from the HTTP responses
   made by the `OAuth2.Client` module.
@@ -11,8 +11,8 @@ defmodule OAuth2.Response do
   """
 
   require Logger
-  import OAuth2.Util
-  alias OAuth2.Client
+  import ExOAuth2.Util
+  alias ExOAuth2.Client
 
   @type status_code :: integer
   @type headers :: [{binary, binary}]

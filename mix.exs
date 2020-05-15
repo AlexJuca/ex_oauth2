@@ -1,12 +1,12 @@
-defmodule OAuth2.Mixfile do
+defmodule ExOAuth2.Mixfile do
   use Mix.Project
 
   @version "2.0.0"
 
   def project do
     [
-      app: :oauth2,
-      name: "OAuth2",
+      app: :exoauth2,
+      name: "ExOAuth2",
       version: @version,
       elixir: "~> 1.2",
       deps: deps(),
@@ -54,16 +54,16 @@ defmodule OAuth2.Mixfile do
       extras: ["README.md"],
       main: "readme",
       source_ref: "v#{@version}",
-      source_url: "https://github.com/scrogson/oauth2"
+      source_url: "https://github.com/alexjuca/exoauth2"
     ]
   end
 
   defp package do
     [
       files: ["lib", "mix.exs", "README.md", "LICENSE"],
-      maintainers: ["Sonny Scroggin"],
+      maintainers: ["Alexandre Juca"],
       licenses: ["MIT"],
-      links: %{github: "https://github.com/scrogson/oauth2"}
+      links: %{github: "https://github.com/alexjuca/exoauth2"}
     ]
   end
 

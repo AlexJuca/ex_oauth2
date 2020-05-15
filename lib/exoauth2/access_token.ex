@@ -1,4 +1,4 @@
-defmodule OAuth2.AccessToken do
+defmodule ExOAuth2.AccessToken do
   @moduledoc """
   This module defines the `OAuth2.AccessToken` struct and provides functionality
   to make authorized requests to an OAuth2 provider using the AccessToken
@@ -8,9 +8,9 @@ defmodule OAuth2.AccessToken do
   `OAuth2.Client.get_token`
   """
 
-  import OAuth2.Util
+  import ExOAuth2.Util
 
-  alias OAuth2.AccessToken
+  alias ExOAuth2.AccessToken
 
   @standard ["access_token", "refresh_token", "expires_in", "token_type"]
 

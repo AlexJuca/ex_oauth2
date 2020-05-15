@@ -1,4 +1,4 @@
-defmodule OAuth2.Strategy do
+defmodule ExOAuth2.Strategy do
   @moduledoc ~S"""
   The OAuth2 strategy specification.
 
@@ -63,7 +63,7 @@ defmodule OAuth2.Strategy do
       user = OAuth2.AccessToken.get!(token, "/user")
   """
 
-  alias OAuth2.Client
+  alias ExOAuth2.Client
 
   @doc """
   Builds the URL to the authorization endpoint.
@@ -100,8 +100,8 @@ defmodule OAuth2.Strategy do
 
   defmacro __using__(_) do
     quote do
-      @behaviour OAuth2.Strategy
-      import OAuth2.Client
+      @behaviour ExOAuth2.Strategy
+      import ExOAuth2.Client
     end
   end
 end

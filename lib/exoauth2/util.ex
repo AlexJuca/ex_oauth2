@@ -1,4 +1,4 @@
-defmodule OAuth2.Util do
+defmodule ExOAuth2.Util do
   @moduledoc false
 
   @spec unix_now :: integer
@@ -31,7 +31,7 @@ defmodule OAuth2.Util do
         type <> "/" <> subtype
 
       _ ->
-        raise OAuth2.Error, reason: "bad content-type: #{content_type}"
+        raise ExOAuth2.Error, reason: "bad content-type: #{content_type}"
     end
   end
 

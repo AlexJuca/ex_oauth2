@@ -1,4 +1,4 @@
-defmodule OAuth2.Strategy.ClientCredentials do
+defmodule ExOAuth2.Strategy.ClientCredentials do
   @moduledoc """
   The Client Credentials Strategy
 
@@ -15,14 +15,14 @@ defmodule OAuth2.Strategy.ClientCredentials do
   authorization server.
   """
 
-  use OAuth2.Strategy
+  use ExOAuth2.Strategy
 
   @doc """
   Not used for this strategy.
   """
   @impl true
   def authorize_url(_client, _params) do
-    raise OAuth2.Error, reason: "This strategy does not implement `authorize_url`."
+    raise ExOAuth2.Error, reason: "This strategy does not implement `authorize_url`."
   end
 
   @doc """

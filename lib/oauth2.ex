@@ -1,4 +1,4 @@
-defmodule OAuth2 do
+defmodule ExOAuth2 do
   @moduledoc """
   The OAuth2 specification
 

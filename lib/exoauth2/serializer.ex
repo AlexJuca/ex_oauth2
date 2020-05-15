@@ -1,4 +1,4 @@
-defmodule OAuth2.Serializer do
+defmodule ExOAuth2.Serializer do
   @moduledoc """
   A serializer is responsible for encoding/decoding request/response bodies.
 

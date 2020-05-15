@@ -1,4 +1,4 @@
-defmodule OAuth2.Client do
+defmodule ExOAuth2.Client do
   @moduledoc ~S"""
   This module defines the `OAuth2.Client` struct and is responsible for building
   and establishing a request for an access token.
@@ -29,7 +29,7 @@ defmodule OAuth2.Client do
       response = OAuth2.Client.post!(client, "/some/other/resources", %{foo: "bar"})
   """
 
-  alias OAuth2.{AccessToken, Client, Error, Request, Response}
+  alias ExOAuth2.{AccessToken, Client, Error, Request, Response}
 
   @type authorize_url :: binary
   @type body :: any
@@ -75,7 +75,7 @@ defmodule OAuth2.Client do
             request_opts: [],
             serializers: %{},
             site: "",
-            strategy: OAuth2.Strategy.AuthCode,
+            strategy: ExOAuth2.Strategy.AuthCode,
             token: nil,
             token_method: :post,
             token_url: "/oauth/token"
@@ -362,7 +362,7 @@ defmodule OAuth2.Client do
   Adds `authorization` header for basic auth.
   """
   @spec basic_auth(t) :: t
-  def basic_auth(%OAuth2.Client{client_id: id, client_secret: secret} = client) do
+  def basic_auth(%ExOAuth2.Client{client_id: id, client_secret: secret} = client) do
     put_header(client, "authorization", "Basic " <> Base.encode64(id <> ":" <> secret))
   end
 
