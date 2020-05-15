@@ -331,7 +331,7 @@ defmodule ExOAuth2.Client do
         opts
       ) do
     refresh_client =
-      %{client | strategy: OAuth2.Strategy.Refresh, token: nil}
+      %{client | strategy: ExOAuth2.Strategy.Refresh, token: nil}
       |> Client.put_param(:refresh_token, refresh_token)
 
     case Client.get_token(refresh_client, params, headers, opts) do
